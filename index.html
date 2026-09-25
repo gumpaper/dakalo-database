@@ -1,1 +1,498 @@
-<h1>The Dakalo Database</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE DAKALO DATABASE™</title>
+    <style>
+        :root {
+            --bg-color: #f7f3e9;
+            --paper-color: #fffdf5;
+            --text-color: #2b2b2b;
+            --accent-red: #c0392b;
+            --accent-yellow: #f39c12;
+            --accent-pink: #ffb7c5;
+            --border-color: #333;
+            --font-mono: 'Courier New', Courier, monospace;
+            --font-hand: 'Comic Sans MS', 'Chalkboard SE', 'Cursive', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-mono);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: var(--paper-color);
+            border: 2px solid var(--border-color);
+            box-shadow: 8px 8px 0px #d4ceb8;
+            padding: 30px;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        .stamp {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            border: 2px solid var(--accent-red);
+            color: var(--accent-red);
+            padding: 5px 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            transform: rotate(5deg);
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+        }
+
+        h1, h2 {
+            margin-top: 0;
+            text-transform: uppercase;
+            border-bottom: 2px dashed var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .stage {
+            display: none;
+        }
+
+        .stage.active {
+            display: block;
+        }
+
+        .input-group {
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        input[type="text"] {
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            background: #fff;
+            outline: none;
+        }
+
+        button {
+            padding: 12px 20px;
+            background: var(--border-color);
+            color: #fff;
+            border: none;
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #555;
+        }
+
+        .error-msg {
+            color: var(--accent-red);
+            margin-top: 10px;
+            font-weight: bold;
+            min-height: 1.2em;
+        }
+
+        .bold-puzzle span.b {
+            font-weight: 900;
+            color: #000;
+            text-decoration: underline;
+        }
+
+        .meme-img {
+            max-width: 100%;
+            height: auto;
+            border: 2px solid #333;
+            margin: 15px 0;
+            transform: rotate(-1deg);
+        }
+
+        .photo-frame {
+            background: #fff;
+            padding: 10px;
+            border: 1px solid #ccc;
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.1);
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .photo-frame img, .photo-frame video {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* Modal styling */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            max-height: 70vh;
+            object-fit: contain;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #eee;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent-yellow);
+            width: 100%;
+            animation: countdown 5s linear forwards;
+        }
+
+        @keyframes countdown {
+            from { width: 100%; }
+            to { width: 0%; }
+        }
+
+        /* Cute Archive Styling */
+        .archive-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .polaroid {
+            background: #fff;
+            padding: 10px 10px 25px 10px;
+            border: 1px solid #ddd;
+            box-shadow: 3px 3px 8px rgba(0,0,0,0.15);
+            transform: rotate(-2deg);
+            transition: transform 0.2s;
+        }
+
+        .polaroid:nth-child(even) {
+            transform: rotate(2deg);
+        }
+
+        .polaroid:hover {
+            transform: scale(1.03) rotate(0deg);
+            z-index: 5;
+        }
+
+        .letter-stationery {
+            background: #fff8fa;
+            border: 2px dashed var(--accent-pink);
+            padding: 25px;
+            margin-top: 30px;
+            position: relative;
+            font-family: var(--font-hand);
+            line-height: 1.6;
+            color: #4a3b32;
+            font-size: 1.1rem;
+            box-shadow: 4px 4px 0px #ffe2e8;
+        }
+
+        .letter-stationery h3 {
+            font-family: var(--font-hand);
+            color: #d85a7fff;
+            border-bottom: 1px solid var(--accent-pink);
+            padding-bottom: 5px;
+        }
+
+        .heart-badge {
+            font-size: 1.5rem;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="stamp">CONFIDENTIAL</div>
+
+        <!-- STAGE 0: OPENING -->
+        <div id="stage-0" class="stage active">
+            <h1>THE DAKALO DATABASE™</h1>
+            <p><strong>CASE FILE:</strong> 001</p>
+            <p><strong>SUBJECT:</strong> DAKALO</p>
+            <p><strong>CLEARANCE LEVEL:</strong> QUESTIONABLE</p>
+            <p><strong>STATUS:</strong> RESTRICTED</p>
+            <p>Enter the access code retrieved from physical evidence to initiate personnel archive inspection.</p>
+            
+            <div class="input-group">
+                <input type="text" id="input-stage-0" placeholder="Enter code...">
+                <button onclick="checkStage0()">Access Database</button>
+            </div>
+            <div id="err-0" class="error-msg"></div>
+        </div>
+
+        <!-- STAGE 1: ABSURD PARAGRAPH -->
+        <div id="stage-1" class="stage">
+            <h2>LEVEL ONE: INTEL BRIEFING</h2>
+            <p class="bold-puzzle">
+                The <span class="b">C</span>ost of buying a dirt bike was <span class="b">O</span>bviously becoming an issue. <span class="b">N</span>evertheless, the candidate <span class="b">G</span>enuinely believed his future <span class="b">R</span>iches were guaranteed. <span class="b">A</span>fter spending <span class="b">T</span>welve hours studying <span class="b">U</span>ltimate ninja techniques, <span class="b">L</span>ogic dictated that <span class="b">A</span>ll financial <span class="b">T</span>ransactions were completely <span class="b">I</span>nfallible. <span class="b">O</span>verall, the <span class="b">N</span>ext <span class="b">S</span>tep remains unclear.
+            </p>
+
+            <div class="input-group">
+                <input type="text" id="input-stage-1" placeholder="Type answer...">
+                <button onclick="checkStage1()">Submit</button>
+            </div>
+            <div id="err-1" class="error-msg"></div>
+
+            <div id="stage-1-success" style="display:none; margin-top: 20px;">
+                <p>Congratulations, next one won't be so easy.</p>
+                <img src="images/cart_titan.jpg" alt="Cart Titan" class="meme-img">
+                <button onclick="nextStage(2)">CONTINUE INVESTIGATION</button>
+            </div>
+        </div>
+
+        <!-- STAGE 2: NUMBER SEQUENCE -->
+        <div id="stage-2" class="stage">
+            <h2>LEVEL TWO: PATTERN RECOGNITION</h2>
+            <p>His ability to identify a pattern should not be questionable.</p>
+            <p><strong>2 → 4 → 8 → 16 → ?</strong></p>
+
+            <div class="input-group">
+                <input type="text" id="input-stage-2" placeholder="Enter missing number...">
+                <button onclick="checkStage2()">Submit</button>
+            </div>
+            <div id="err-2" class="error-msg"></div>
+        </div>
+
+        <!-- STAGE 3: PERSONNEL VERIFICATION -->
+        <div id="stage-3" class="stage">
+            <h2>LEVEL THREE: PERSONNEL VERIFICATION</h2>
+            <p>Confirm subject identity details provided by Lebo.</p>
+
+            <div class="input-group">
+                <label>1. What is Lebo's favourite flower?</label>
+                <input type="text" id="input-q1" placeholder="Answer...">
+
+                <label>2. What is the name of Lebo's black girl dog?</label>
+                <input type="text" id="input-q2" placeholder="Answer...">
+
+                <button onclick="checkStage3()">Verify Identity</button>
+            </div>
+            <div id="err-3" class="error-msg"></div>
+        </div>
+
+        <!-- STAGE 4: LOCATION EVIDENCE -->
+        <div id="stage-4" class="stage">
+            <h2>LEVEL FOUR: LOCATION IDENTIFICATION</h2>
+            <p>Whose class is this?</p>
+            
+            <div class="photo-frame">
+                <img src="images/classroom.jpg" alt="Classroom Evidence">
+            </div>
+
+            <div class="input-group">
+                <input type="text" id="input-stage-4" placeholder="Teacher name...">
+                <button onclick="checkStage4()">Submit Location</button>
+            </div>
+            <div id="err-4" class="error-msg"></div>
+        </div>
+
+        <!-- STAGE 5: FINAL ACCESS -->
+        <div id="stage-5" class="stage">
+            <h2>FINAL ACCESS REQUIREMENT</h2>
+            <p>The password is an object that is yellow in color. Think of a website you once made. Think of what you made me use to unlock it. And it's very special to the both of us, especially you.</p>
+
+            <div class="input-group">
+                <input type="text" id="input-stage-5" placeholder="Enter final password...">
+                <button onclick="checkStage5()">Unlock Archive</button>
+            </div>
+            <div id="err-5" class="error-msg"></div>
+        </div>
+
+        <!-- STAGE FINAL: UNLOCKED ARCHIVE -->
+        <div id="stage-final" class="stage">
+            <h2>DATABASE UNLOCKED <span class="heart-badge">💖</span></h2>
+            <p>Access granted. Displaying archived memory files...</p>
+
+            <div class="archive-grid">
+                <div class="polaroid"><img src="images/us_photo1.jpg" alt="Memory 1"></div>
+                <div class="polaroid"><img src="images/us_photo2.jpg" alt="Memory 2"></div>
+                <div class="polaroid"><img src="images/us_photo3.jpg" alt="Memory 3"></div>
+                <div class="polaroid"><img src="images/us_photo4.jpg" alt="Memory 4"></div>
+                <div class="polaroid"><img src="images/us_photo5.jpg" alt="Memory 5"></div>
+            </div>
+
+            <div class="photo-frame" style="margin-top: 20px;">
+                <video controls>
+                    <source src="images/us_video.mp4" type="video/mp4">
+                    Your browser does not support video playback.
+                </video>
+            </div>
+
+            <div class="letter-stationery">
+                <h3>A Letter For You <span class="heart-badge">💌</span></h3>
+                <p>i wanted to make something small for you bc why not lol and i dont regret it. also idk if you remember the first website you made for me, the password was pikachu and i think it’s kinda funny that i made it pikachu too.</p>
+
+                <p>anyway, i made this because well i thought a normal message or website would be a little boring and since you know i like challenging you, i did and well i wanted yo make you something special because we might not see each other as much after this. it’s honestly js a small way of me trying to show my appreciation for you and i cant exaggerate enough when i say i genuinely did NOT think we’d make it past august.</p>
+
+                <p>We hiked together. We paddled. we played games together. we played games against each other. playing basketball tested my determination🫩. Weve gotten away with so many stuff. ive made so many memories and i want to make more with you and i wouldn’t want it any other way.</p>
+
+                <p>i think ive realised a lot of stuff about myself on thr journey of getting to know you. all those late night calls listening to you explain naruto to me at 5am in the morning or debating random stuff</p>
+
+                <p>this letter’s lowk shabby but thank you for what you’ve meant to me throughout these 6/7 months :)</p>
+                
+                <p style="text-align: right; font-weight: bold; margin-top: 20px;">– Lebo 💕</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- POPUP MODAL FOR PIKACHU -->
+    <div id="pikachu-modal" class="modal-overlay">
+        <div class="modal-content">
+            <img src="images/pikachu_plushie.jpg" alt="Pikachu Plushie">
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function saveProgress(stageNum) {
+            localStorage.setItem('dakalo_db_stage', stageNum);
+        }
+
+        function loadProgress() {
+            const savedStage = localStorage.getItem('dakalo_db_stage');
+            if (savedStage !== null) {
+                showStage(parseInt(savedStage, 10));
+            }
+        }
+
+        function showStage(stageNum) {
+            document.querySelectorAll('.stage').forEach(el => el.classList.remove('active'));
+            const target = document.getElementById(`stage-${stageNum}`);
+            if (target) target.classList.add('active');
+            saveProgress(stageNum);
+        }
+
+        function nextStage(stageNum) {
+            showStage(stageNum);
+        }
+
+        function checkStage0() {
+            const val = document.getElementById('input-stage-0').value.trim();
+            if (val === '635') {
+                showStage(1);
+            } else {
+                document.getElementById('err-0').innerText = 'ACCESS DENIED. Impressively incorrect. Try again.';
+            }
+        }
+
+        function checkStage1() {
+            const val = document.getElementById('input-stage-1').value.trim().toLowerCase();
+            if (val === 'congratulations') {
+                document.getElementById('stage-1-success').style.display = 'block';
+                document.getElementById('err-1').innerText = '';
+            } else {
+                document.getElementById('err-1').innerText = 'INCORRECT. Look closer at the bold letters.';
+            }
+        }
+
+        function checkStage2() {
+            const val = document.getElementById('input-stage-2').value.trim();
+            if (val === '32') {
+                showStage(3);
+            } else {
+                document.getElementById('err-2').innerText = 'INCORRECT. The numbers are literally doubling.';
+            }
+        }
+
+        function checkStage3() {
+            const q1 = document.getElementById('input-q1').value.trim().toLowerCase();
+            const q2 = document.getElementById('input-q2').value.trim().toLowerCase();
+
+            const q1Valid = (q1 === 'sunflower' || q1 === 'sunflowers');
+            const q2Valid = (q2 === 'ranger');
+
+            if (q1Valid && q2Valid) {
+                showStage(4);
+            } else {
+                document.getElementById('err-3').innerText = 'VERIFICATION FAILED. Review personal knowledge entries.';
+            }
+        }
+
+        function checkStage4() {
+            const val = document.getElementById('input-stage-4').value.trim().toLowerCase();
+            const validAnswers = [
+                'van niekerk',
+                'vanniekerk',
+                'van kiekerk',
+                'vankiekerk',
+                'ms van niekerk',
+                'mrs van niekerk',
+                'ms. van niekerk',
+                'mrs. van niekerk',
+                'ms van kiekerk',
+                'mrs van kiekerk',
+                'ms. van kiekerk',
+                'mrs. van kiekerk'
+            ];
+
+            if (validAnswers.includes(val)) {
+                showStage(5);
+            } else {
+                document.getElementById('err-4').innerText = 'LOCATION UNCONFIRMED. Re-evaluate classroom visual evidence.';
+            }
+        }
+
+        function checkStage5() {
+            const val = document.getElementById('input-stage-5').value.trim().toLowerCase();
+            if (val === 'pikachu') {
+                const modal = document.getElementById('pikachu-modal');
+                modal.style.display = 'flex';
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    showStage('final');
+                }, 5000);
+            } else {
+                document.getElementById('err-5').innerText = 'ACCESS DENIED. Think back to the website he made.';
+            }
+        }
+
+        window.onload = loadProgress;
+    </script>
+</body>
+</html>
