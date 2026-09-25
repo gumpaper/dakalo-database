@@ -3,496 +3,355 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE DAKALO DATABASE™</title>
+    <title>The Dakalo Database™</title>
     <style>
         :root {
-            --bg-color: #f7f3e9;
-            --paper-color: #fffdf5;
-            --text-color: #2b2b2b;
-            --accent-red: #c0392b;
-            --accent-yellow: #f39c12;
-            --accent-pink: #ffb7c5;
-            --border-color: #333;
-            --font-mono: 'Courier New', Courier, monospace;
-            --font-hand: 'Comic Sans MS', 'Chalkboard SE', 'Cursive', sans-serif;
+            --pink-main: #ffb6c1;
+            --pink-dark: #ff69b4;
+            --pink-light: #fff0f5;
+            --pink-accent: #db7093;
+            --bg-dark: #0f0f12;
+            --card-bg: #18181c;
+            --input-bg: #24242c;
+            --text-light: #f5f5f5;
+            --text-muted: #d1d1d1;
+            --shadow-glow: rgba(255, 182, 193, 0.25);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: var(--font-mono);
-            margin: 0;
-            padding: 20px;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            box-sizing: border-box;
+            padding: 20px;
+            background-image: radial-gradient(circle at 50% 50%, rgba(255, 105, 180, 0.05) 0%, transparent 80%);
         }
 
         .container {
             width: 100%;
-            max-width: 800px;
-            background: var(--paper-color);
-            border: 2px solid var(--border-color);
-            box-shadow: 8px 8px 0px #d4ceb8;
-            padding: 30px;
-            position: relative;
-            box-sizing: border-box;
-        }
-
-        .stamp {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            border: 2px solid var(--accent-red);
-            color: var(--accent-red);
-            padding: 5px 10px;
-            font-weight: bold;
-            text-transform: uppercase;
-            transform: rotate(5deg);
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-        }
-
-        h1, h2 {
-            margin-top: 0;
-            text-transform: uppercase;
-            border-bottom: 2px dashed var(--border-color);
-            padding-bottom: 10px;
-        }
-
-        .stage {
-            display: none;
-        }
-
-        .stage.active {
-            display: block;
-        }
-
-        .input-group {
-            margin-top: 25px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        input[type="text"] {
-            padding: 12px;
-            border: 2px solid var(--border-color);
-            font-family: var(--font-mono);
-            font-size: 1rem;
-            background: #fff;
-            outline: none;
-        }
-
-        button {
-            padding: 12px 20px;
-            background: var(--border-color);
-            color: #fff;
-            border: none;
-            font-family: var(--font-mono);
-            font-size: 1rem;
-            cursor: pointer;
-            text-transform: uppercase;
-            font-weight: bold;
-            transition: background 0.2s;
-        }
-
-        button:hover {
-            background: #555;
-        }
-
-        .error-msg {
-            color: var(--accent-red);
-            margin-top: 10px;
-            font-weight: bold;
-            min-height: 1.2em;
-        }
-
-        .bold-puzzle span.b {
-            font-weight: 900;
-            color: #000;
-            text-decoration: underline;
-        }
-
-        .meme-img {
-            max-width: 100%;
-            height: auto;
-            border: 2px solid #333;
-            margin: 15px 0;
-            transform: rotate(-1deg);
-        }
-
-        .photo-frame {
-            background: #fff;
-            padding: 10px;
-            border: 1px solid #ccc;
-            box-shadow: 4px 4px 0px rgba(0,0,0,0.1);
-            margin: 15px 0;
+            max-width: 850px;
+            background-color: var(--card-bg);
+            border: 2px solid var(--pink-main);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px var(--shadow-glow);
             text-align: center;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
         }
 
-        .photo-frame img, .photo-frame video {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 0 auto;
-        }
-
-        /* Modal styling */
-        .modal-overlay {
-            position: fixed;
+        .container::before {
+            content: '';
+            position: absolute;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0,0,0,0.8);
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--pink-main), var(--pink-dark), var(--pink-accent));
+        }
+
+        h1 {
+            color: var(--pink-main);
+            margin-bottom: 8px;
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(255, 182, 193, 0.4);
+        }
+
+        .subtitle {
+            color: var(--pink-light);
+            font-style: italic;
+            margin-bottom: 30px;
+            font-size: 1.15rem;
+            opacity: 0.9;
+        }
+
+        .screen {
             display: none;
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
+        }
+
+        .screen.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .media-frame {
+            display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            margin: 20px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 10px;
         }
 
-        .modal-content {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
-            max-width: 90%;
-            max-height: 90%;
-            position: relative;
-        }
-
-        .modal-content img {
+        .clue-img, .clue-video {
             max-width: 100%;
-            max-height: 70vh;
+            max-height: 400px;
+            border-radius: 10px;
+            border: 2px solid var(--pink-main);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
             object-fit: contain;
         }
 
-        .progress-bar {
+        .clue-video {
             width: 100%;
-            height: 6px;
-            background: #eee;
-            margin-top: 15px;
-            overflow: hidden;
+            max-height: 450px;
         }
 
-        .progress-fill {
-            height: 100%;
-            background: var(--accent-yellow);
-            width: 100%;
-            animation: countdown 5s linear forwards;
+        .puzzle-box {
+            background-color: rgba(255, 182, 193, 0.03);
+            border: 1px solid rgba(255, 182, 193, 0.3);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            position: relative;
         }
 
-        @keyframes countdown {
-            from { width: 100%; }
-            to { width: 0%; }
+        .puzzle-box h3 {
+            color: var(--pink-main);
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
         }
 
-        /* Cute Archive Styling */
-        .archive-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+        p {
+            line-height: 1.7;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
+
+        .input-group {
             margin: 20px 0;
         }
 
-        .polaroid {
-            background: #fff;
-            padding: 10px 10px 25px 10px;
-            border: 1px solid #ddd;
-            box-shadow: 3px 3px 8px rgba(0,0,0,0.15);
-            transform: rotate(-2deg);
-            transition: transform 0.2s;
+        input[type="text"] {
+            width: 80%;
+            max-width: 400px;
+            padding: 14px 20px;
+            border: 2px solid var(--pink-main);
+            border-radius: 10px;
+            background-color: var(--input-bg);
+            color: #ffffff;
+            font-size: 1.05rem;
+            text-align: center;
+            outline: none;
+            transition: all 0.3s ease;
         }
 
-        .polaroid:nth-child(even) {
-            transform: rotate(2deg);
+        input[type="text"]:focus {
+            border-color: var(--pink-dark);
+            box-shadow: 0 0 12px var(--pink-dark);
+            background-color: #2c2c36;
         }
 
-        .polaroid:hover {
-            transform: scale(1.03) rotate(0deg);
-            z-index: 5;
-        }
-
-        .letter-stationery {
-            background: #fff8fa;
-            border: 2px dashed var(--accent-pink);
-            padding: 25px;
-            margin-top: 30px;
-            position: relative;
-            font-family: var(--font-hand);
-            line-height: 1.6;
-            color: #4a3b32;
+        button {
+            background: linear-gradient(135deg, var(--pink-main), var(--pink-accent));
+            color: #121212;
+            border: none;
+            padding: 14px 32px;
             font-size: 1.1rem;
-            box-shadow: 4px 4px 0px #ffe2e8;
+            font-weight: 700;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(255, 182, 193, 0.2);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .letter-stationery h3 {
-            font-family: var(--font-hand);
-            color: #d85a7fff;
-            border-bottom: 1px solid var(--accent-pink);
-            padding-bottom: 5px;
+        button:hover {
+            background: linear-gradient(135deg, var(--pink-dark), var(--pink-accent));
+            color: #ffffff;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(255, 105, 180, 0.4);
         }
 
-        .heart-badge {
-            font-size: 1.5rem;
-            vertical-align: middle;
+        button:active {
+            transform: translateY(-1px);
+        }
+
+        .error-msg {
+            color: #ff5252;
+            font-weight: 600;
+            margin-top: 12px;
+            min-height: 24px;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .gallery-item {
+            overflow: hidden;
+            border-radius: 10px;
+            border: 2px solid var(--pink-main);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.04);
+        }
+
+        .gallery img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background-color: rgba(255, 105, 180, 0.15);
+            color: var(--pink-main);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            letter-spacing: 1.5px;
+            border: 1px solid var(--pink-main);
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="stamp">CONFIDENTIAL</div>
+<div class="container">
+    <h1>The Dakalo Database™</h1>
+    <div class="subtitle">Security System Online. Verification Required.</div>
 
-        <!-- STAGE 0: OPENING -->
-        <div id="stage-0" class="stage active">
-            <h1>THE DAKALO DATABASE™</h1>
-            <p><strong>CASE FILE:</strong> 001</p>
-            <p><strong>SUBJECT:</strong> DAKALO</p>
-            <p><strong>CLEARANCE LEVEL:</strong> QUESTIONABLE</p>
-            <p><strong>STATUS:</strong> RESTRICTED</p>
-            <p>Enter the access code retrieved from physical evidence to initiate personnel archive inspection.</p>
+    <!-- Screen 1: Welcome / Start -->
+    <div id="screen-start" class="screen active">
+        <div class="status-badge">SYSTEM STATUS: LOCKED</div>
+        <div class="puzzle-box">
+            <h3>RESTRICTED ACCESS ARCHIVE</h3>
+            <p>Welcome agent. You are attempting to access personal encrypted files within <strong>The Dakalo Database™</strong>.</p>
+            <p>To view the archived memories and video vault, you must answer three verification prompts.</p>
+        </div>
+        <button onclick="nextScreen('screen-puzzle1')">Initialize Clearance Check</button>
+    </div>
+
+    <!-- Screen 2: Puzzle 1 (Classroom / School) -->
+    <div id="screen-puzzle1" class="screen">
+        <div class="status-badge">SECURITY CHECK 1 / 3</div>
+        <div class="puzzle-box">
+            <h3>Level 1: Location Verification</h3>
+            <div class="media-frame">
+                <img src="classroom.jpg" alt="Classroom Location" class="clue-img">
+            </div>
+            <p>Identify the location or environment shown in this archive image:</p>
+            <div class="input-group">
+                <input type="text" id="ans1" placeholder="Enter clearance answer...">
+            </div>
+            <button onclick="checkAnswer(1, 'classroom')">Submit Passcode</button>
+            <div id="err1" class="error-msg"></div>
+        </div>
+    </div>
+
+    <!-- Screen 3: Puzzle 2 (Pikachu Plushie) -->
+    <div id="screen-puzzle2" class="screen">
+        <div class="status-badge">SECURITY CHECK 2 / 3</div>
+        <div class="puzzle-box">
+            <h3>Level 2: Entity Identification</h3>
+            <div class="media-frame">
+                <img src="pikachu_plushie.jpg" alt="Pikachu Item" class="clue-img">
+            </div>
+            <p>Identify the subject featured in this encrypted photo:</p>
+            <div class="input-group">
+                <input type="text" id="ans2" placeholder="Enter clearance answer...">
+            </div>
+            <button onclick="checkAnswer(2, 'pikachu')">Submit Passcode</button>
+            <div id="err2" class="error-msg"></div>
+        </div>
+    </div>
+
+    <!-- Screen 4: Puzzle 3 (Cart Titan) -->
+    <div id="screen-puzzle3" class="screen">
+        <div class="status-badge">SECURITY CHECK 3 / 3</div>
+        <div class="puzzle-box">
+            <h3>Level 3: Classification Check</h3>
+            <div class="media-frame">
+                <img src="cart_titan.jpg" alt="Cart Titan Entity" class="clue-img">
+            </div>
+            <p>Specify the exact name or classification of this record:</p>
+            <div class="input-group">
+                <input type="text" id="ans3" placeholder="Enter clearance answer...">
+            </div>
+            <button onclick="checkAnswer(3, 'cart titan')">Submit Passcode</button>
+            <div id="err3" class="error-msg"></div>
+        </div>
+    </div>
+
+    <!-- Screen 5: Final Memory Unlocked -->
+    <div id="screen-final" class="screen">
+        <div class="status-badge" style="background-color: rgba(255, 182, 193, 0.3);">CLEARANCE GRANTED</div>
+        <div class="puzzle-box">
+            <h2 style="color: var(--pink-main); margin-bottom: 10px; font-size: 2rem;">DATABASE UNLOCKED</h2>
+            <p style="color: var(--pink-light); font-size: 1.1rem;">All clearance checks passed. Decrypting main vault files...</p>
             
-            <div class="input-group">
-                <input type="text" id="input-stage-0" placeholder="Enter code...">
-                <button onclick="checkStage0()">Access Database</button>
-            </div>
-            <div id="err-0" class="error-msg"></div>
-        </div>
-
-        <!-- STAGE 1: ABSURD PARAGRAPH -->
-        <div id="stage-1" class="stage">
-            <h2>LEVEL ONE: INTEL BRIEFING</h2>
-            <p class="bold-puzzle">
-                The <span class="b">C</span>ost of buying a dirt bike was <span class="b">O</span>bviously becoming an issue. <span class="b">N</span>evertheless, the candidate <span class="b">G</span>enuinely believed his future <span class="b">R</span>iches were guaranteed. <span class="b">A</span>fter spending <span class="b">T</span>welve hours studying <span class="b">U</span>ltimate ninja techniques, <span class="b">L</span>ogic dictated that <span class="b">A</span>ll financial <span class="b">T</span>ransactions were completely <span class="b">I</span>nfallible. <span class="b">O</span>verall, the <span class="b">N</span>ext <span class="b">S</span>tep remains unclear.
-            </p>
-
-            <div class="input-group">
-                <input type="text" id="input-stage-1" placeholder="Type answer...">
-                <button onclick="checkStage1()">Submit</button>
-            </div>
-            <div id="err-1" class="error-msg"></div>
-
-            <div id="stage-1-success" style="display:none; margin-top: 20px;">
-                <p>Congratulations, next one won't be so easy.</p>
-                <img src="images/cart_titan.jpg" alt="Cart Titan" class="meme-img">
-                <button onclick="nextStage(2)">CONTINUE INVESTIGATION</button>
-            </div>
-        </div>
-
-        <!-- STAGE 2: NUMBER SEQUENCE -->
-        <div id="stage-2" class="stage">
-            <h2>LEVEL TWO: PATTERN RECOGNITION</h2>
-            <p>His ability to identify a pattern should not be questionable.</p>
-            <p><strong>2 → 4 → 8 → 16 → ?</strong></p>
-
-            <div class="input-group">
-                <input type="text" id="input-stage-2" placeholder="Enter missing number...">
-                <button onclick="checkStage2()">Submit</button>
-            </div>
-            <div id="err-2" class="error-msg"></div>
-        </div>
-
-        <!-- STAGE 3: PERSONNEL VERIFICATION -->
-        <div id="stage-3" class="stage">
-            <h2>LEVEL THREE: PERSONNEL VERIFICATION</h2>
-            <p>Confirm subject identity details provided by Lebo.</p>
-
-            <div class="input-group">
-                <label>1. What is Lebo's favourite flower?</label>
-                <input type="text" id="input-q1" placeholder="Answer...">
-
-                <label>2. What is the name of Lebo's black girl dog?</label>
-                <input type="text" id="input-q2" placeholder="Answer...">
-
-                <button onclick="checkStage3()">Verify Identity</button>
-            </div>
-            <div id="err-3" class="error-msg"></div>
-        </div>
-
-        <!-- STAGE 4: LOCATION EVIDENCE -->
-        <div id="stage-4" class="stage">
-            <h2>LEVEL FOUR: LOCATION IDENTIFICATION</h2>
-            <p>Whose class is this?</p>
-            
-            <div class="photo-frame">
-                <img src="images/classroom.jpg" alt="Classroom Evidence">
-            </div>
-
-            <div class="input-group">
-                <input type="text" id="input-stage-4" placeholder="Teacher name...">
-                <button onclick="checkStage4()">Submit Location</button>
-            </div>
-            <div id="err-4" class="error-msg"></div>
-        </div>
-
-        <!-- STAGE 5: FINAL ACCESS -->
-        <div id="stage-5" class="stage">
-            <h2>FINAL ACCESS REQUIREMENT</h2>
-            <p>The password is an object that is yellow in color. Think of a website you once made. Think of what you made me use to unlock it. And it's very special to the both of us, especially you.</p>
-
-            <div class="input-group">
-                <input type="text" id="input-stage-5" placeholder="Enter final password...">
-                <button onclick="checkStage5()">Unlock Archive</button>
-            </div>
-            <div id="err-5" class="error-msg"></div>
-        </div>
-
-        <!-- STAGE FINAL: UNLOCKED ARCHIVE -->
-        <div id="stage-final" class="stage">
-            <h2>DATABASE UNLOCKED <span class="heart-badge">💖</span></h2>
-            <p>Access granted. Displaying archived memory files...</p>
-
-            <div class="archive-grid">
-                <div class="polaroid"><img src="images/us_photo1.jpg" alt="Memory 1"></div>
-                <div class="polaroid"><img src="images/us_photo2.jpg" alt="Memory 2"></div>
-                <div class="polaroid"><img src="images/us_photo3.jpg" alt="Memory 3"></div>
-                <div class="polaroid"><img src="images/us_photo4.jpg" alt="Memory 4"></div>
-                <div class="polaroid"><img src="images/us_photo5.jpg" alt="Memory 5"></div>
-            </div>
-
-            <div class="photo-frame" style="margin-top: 20px;">
-                <video controls>
-                    <source src="images/us_video.mp4" type="video/mp4">
-                    Your browser does not support video playback.
+            <div class="media-frame" style="margin: 25px 0;">
+                <video controls class="clue-video">
+                    <source src="us_video.mp4" type="video/mp4">
+                    Your browser does not support playing this video.
                 </video>
             </div>
 
-            <div class="letter-stationery">
-                <h3>A Letter For You <span class="heart-badge">💌</span></h3>
-                <p>i wanted to make something small for you bc why not lol and i dont regret it. also idk if you remember the first website you made for me, the password was pikachu and i think it’s kinda funny that i made it pikachu too.</p>
-
-                <p>anyway, i made this because well i thought a normal message or website would be a little boring and since you know i like challenging you, i did and well i wanted yo make you something special because we might not see each other as much after this. it’s honestly js a small way of me trying to show my appreciation for you and i cant exaggerate enough when i say i genuinely did NOT think we’d make it past august.</p>
-
-                <p>We hiked together. We paddled. we played games together. we played games against each other. playing basketball tested my determination🫩. Weve gotten away with so many stuff. ive made so many memories and i want to make more with you and i wouldn’t want it any other way.</p>
-
-                <p>i think ive realised a lot of stuff about myself on thr journey of getting to know you. all those late night calls listening to you explain naruto to me at 5am in the morning or debating random stuff</p>
-
-                <p>this letter’s lowk shabby but thank you for what you’ve meant to me throughout these 6/7 months :)</p>
-                
-                <p style="text-align: right; font-weight: bold; margin-top: 20px;">– Lebo 💕</p>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- POPUP MODAL FOR PIKACHU -->
-    <div id="pikachu-modal" class="modal-overlay">
-        <div class="modal-content">
-            <img src="images/pikachu_plushie.jpg" alt="Pikachu Plushie">
-            <div class="progress-bar">
-                <div class="progress-fill"></div>
+            <h3 style="margin-top: 30px; color: var(--pink-main); letter-spacing: 1px;">Archived Photo Records</h3>
+            <div class="gallery">
+                <div class="gallery-item"><img src="us_photo1.jpg" alt="Archived Record 1"></div>
+                <div class="gallery-item"><img src="us_photo2.jpg" alt="Archived Record 2"></div>
+                <div class="gallery-item"><img src="us_photo3.jpg" alt="Archived Record 3"></div>
+                <div class="gallery-item"><img src="us_photo4.jpg" alt="Archived Record 4"></div>
+                <div class="gallery-item"><img src="us_photo5.jpg" alt="Archived Record 5"></div>
             </div>
         </div>
     </div>
+</div>
 
-    <script>
-        function saveProgress(stageNum) {
-            localStorage.setItem('dakalo_db_stage', stageNum);
+<script>
+    function nextScreen(screenId) {
+        document.querySelectorAll('.screen').forEach(s => {
+            s.classList.remove('active');
+        });
+        const targetScreen = document.getElementById(screenId);
+        targetScreen.classList.add('active');
+    }
+
+    function checkAnswer(puzzleNum, correctAnswer) {
+        const userInput = document.getElementById('ans' + puzzleNum).value.trim().toLowerCase();
+        const errorDiv = document.getElementById('err' + puzzleNum);
+
+        if (userInput.includes(correctAnswer)) {
+            errorDiv.textContent = "";
+            if (puzzleNum === 1) nextScreen('screen-puzzle2');
+            else if (puzzleNum === 2) nextScreen('screen-puzzle3');
+            else if (puzzleNum === 3) nextScreen('screen-final');
+        } else {
+            errorDiv.textContent = "Access Denied: Invalid Security Passcode.";
         }
+    }
+</script>
 
-        function loadProgress() {
-            const savedStage = localStorage.getItem('dakalo_db_stage');
-            if (savedStage !== null) {
-                showStage(parseInt(savedStage, 10));
-            }
-        }
-
-        function showStage(stageNum) {
-            document.querySelectorAll('.stage').forEach(el => el.classList.remove('active'));
-            const target = document.getElementById(`stage-${stageNum}`);
-            if (target) target.classList.add('active');
-            saveProgress(stageNum);
-        }
-
-        function nextStage(stageNum) {
-            showStage(stageNum);
-        }
-
-        function checkStage0() {
-            const val = document.getElementById('input-stage-0').value.trim();
-            if (val === '635') {
-                showStage(1);
-            } else {
-                document.getElementById('err-0').innerText = 'ACCESS DENIED. Impressively incorrect. Try again.';
-            }
-        }
-
-        function checkStage1() {
-            const val = document.getElementById('input-stage-1').value.trim().toLowerCase();
-            if (val === 'congratulations') {
-                document.getElementById('stage-1-success').style.display = 'block';
-                document.getElementById('err-1').innerText = '';
-            } else {
-                document.getElementById('err-1').innerText = 'INCORRECT. Look closer at the bold letters.';
-            }
-        }
-
-        function checkStage2() {
-            const val = document.getElementById('input-stage-2').value.trim();
-            if (val === '32') {
-                showStage(3);
-            } else {
-                document.getElementById('err-2').innerText = 'INCORRECT. The numbers are literally doubling.';
-            }
-        }
-
-        function checkStage3() {
-            const q1 = document.getElementById('input-q1').value.trim().toLowerCase();
-            const q2 = document.getElementById('input-q2').value.trim().toLowerCase();
-
-            const q1Valid = (q1 === 'sunflower' || q1 === 'sunflowers');
-            const q2Valid = (q2 === 'ranger');
-
-            if (q1Valid && q2Valid) {
-                showStage(4);
-            } else {
-                document.getElementById('err-3').innerText = 'VERIFICATION FAILED. Review personal knowledge entries.';
-            }
-        }
-
-        function checkStage4() {
-            const val = document.getElementById('input-stage-4').value.trim().toLowerCase();
-            const validAnswers = [
-                'van niekerk',
-                'vanniekerk',
-                'van kiekerk',
-                'vankiekerk',
-                'ms van niekerk',
-                'mrs van niekerk',
-                'ms. van niekerk',
-                'mrs. van niekerk',
-                'ms van kiekerk',
-                'mrs van kiekerk',
-                'ms. van kiekerk',
-                'mrs. van kiekerk'
-            ];
-
-            if (validAnswers.includes(val)) {
-                showStage(5);
-            } else {
-                document.getElementById('err-4').innerText = 'LOCATION UNCONFIRMED. Re-evaluate classroom visual evidence.';
-            }
-        }
-
-        function checkStage5() {
-            const val = document.getElementById('input-stage-5').value.trim().toLowerCase();
-            if (val === 'pikachu') {
-                const modal = document.getElementById('pikachu-modal');
-                modal.style.display = 'flex';
-                setTimeout(() => {
-                    modal.style.display = 'none';
-                    showStage('final');
-                }, 5000);
-            } else {
-                document.getElementById('err-5').innerText = 'ACCESS DENIED. Think back to the website he made.';
-            }
-        }
-
-        window.onload = loadProgress;
-    </script>
 </body>
 </html>
