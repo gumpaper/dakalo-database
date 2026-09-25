@@ -390,26 +390,28 @@
     </div>
 
     <script>
-        function saveProgress(stageNum) {
-            localStorage.setItem('dakalo_db_stage', stageNum);
+        function saveProgress(stageKey) {
+            localStorage.setItem('dakalo_db_stage', stageKey);
         }
 
         function loadProgress() {
             const savedStage = localStorage.getItem('dakalo_db_stage');
             if (savedStage !== null) {
-                showStage(parseInt(savedStage, 10));
+                showStage(savedStage);
             }
         }
 
-        function showStage(stageNum) {
+        function showStage(stageKey) {
             document.querySelectorAll('.stage').forEach(el => el.classList.remove('active'));
-            const target = document.getElementById(`stage-${stageNum}`);
-            if (target) target.classList.add('active');
-            saveProgress(stageNum);
+            const target = document.getElementById(`stage-${stageKey}`);
+            if (target) {
+                target.classList.add('active');
+                saveProgress(stageKey);
+            }
         }
 
-        function nextStage(stageNum) {
-            showStage(stageNum);
+        function nextStage(stageKey) {
+            showStage(stageKey);
         }
 
         function checkStage0() {
